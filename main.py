@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from llama_cpp import Llama
 import re
 import json
@@ -10,21 +10,32 @@ app = FastAPI(
     version="1.0.0"
 )
 # 모델 경로 설정
-MODEL_PATH = "./models/Qwen3.5-0.8B-Q4_K_M.gguf"
-# MODEL_PATH = "./models/Qwen3.5-2B-Q4_K_M.gguf"
+MODEL_PATH = "/app/models/Qwen3.5-0.8B-Q4_K_M.gguf"
+# MODEL_PATH = "/app/models/Qwen3.5-2B-Q4_K_M.gguf"
 
 # 모델 로드
 llm = Llama(
     model_path=MODEL_PATH,
     n_ctx=1024,      # 컨텍스트 길이
     n_gpu_layers=0, # GPU 레이어 수 (0이면 CPU에서 실행)
-    verbose=False    # 불필요한 엔진 로그 숨김
+    verbose=True    # 불필요한 엔진 로그 숨김
 )
 print("모델 로딩 완료")
 
 # 요청 및 응답 데이터 구조
 class TextRequest(BaseModel):
-    text: str
+    text: str = Field(..., description="추출할 중고거래 게시글 텍스트")
+
+    # Swagger UI의 'Request body'에 기본값으로 들어갈 내용
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "text": "(미개봉) 아디다스 가젤 블랙 270 남성용 7만원에 팝니다."
+                }
+            ]
+        }
+    }
 
 class NERResponse(BaseModel):
     ORG: str
