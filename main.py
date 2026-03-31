@@ -6,7 +6,7 @@ import json
 
 app = FastAPI(
     title="NER-SLLM API", 
-    description="게시글에서 상품명 등 핵심 정보를 JSON 형태로 추출하는 API",
+    description="게시글에서 상품명, 브랜드 등 핵심 정보를 JSON 형태로 추출하는 API",
     version="1.0.0"
 )
 # 모델 경로 설정
