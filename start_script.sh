@@ -50,4 +50,4 @@ else
 fi
 
 # 완료 안내 메시지
-echo "Swagger UI에 접속: http://127.0.0.1:8000/docs"
+echo "Swagger UI에 접속: http://127.0.0.1:8005/docs"

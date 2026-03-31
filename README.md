@@ -16,7 +16,7 @@ bash start_script.sh
 1. 모델 파일 다운로드 (Hugging Face → `models/`)
 2. Docker 이미지 빌드 및 컨테이너 실행
 
-완료 후 **Swagger UI**: http://127.0.0.1:8000/docs
+완료 후 **Swagger UI**: http://127.0.0.1:8005/docs
 
 ## API 엔드포인트
 

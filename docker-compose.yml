@@ -3,7 +3,7 @@ services:
     build: .
     container_name: ner-sllm-api
     ports:
-      - "8000:8000"
+      - "8005:8005"
     volumes:
       - ./models:/app/models
     environment:
