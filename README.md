@@ -5,7 +5,7 @@
 sLLM(Qwen3.5 GGUF)을 llama-cpp-python으로 로컬 추론하며, FastAPI 기반으로 동작합니다.
 
 ## 빠른 시작
-
+docker가 실행중임을 가정하고 진행
 ```bash
 git clone https://github.com/kmg6522/Ner-sllm.git
 cd Ner-sllm
