@@ -5,10 +5,6 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     gcc \
     g++ \
-    cmake \
-    python3-dev \
-    ninja-build \
-    git \
     && rm -rf /var/lib/apt/lists/*
 
 # 작업 디렉토리 설정
@@ -21,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # FastAPI 기본 포트
-EXPOSE 8005
+EXPOSE 8000
 
 # 서버 실행 명령어 (외부 접속을 위해 host를 0.0.0.0으로 설정)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8005"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
