@@ -18,6 +18,41 @@ bash start_script.sh
 
 완료 후 **Swagger UI**: http://127.0.0.1:8005/docs
 
+## 프로젝트 구조
+
+```
+├── main.py                      # 앱 진입점 (FastAPI 인스턴스 생성 + 라우터 등록)
+├── app/
+│   ├── __init__.py              # 패키지 선언
+│   ├── config.py                # 설정값 관리 (MODEL_PATH, N_CTX 등)
+│   ├── schemas.py               # Pydantic 요청/응답 모델 (TextRequest, NERResponse)
+│   ├── services/
+│   │   ├── __init__.py
+│   │   └── llm_service.py       # LLM 모델 로드 + 추론 함수
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   └── extract.py           # /health, /extract 엔드포인트 정의
+│   └── utils/
+│       ├── __init__.py
+│       └── parser.py            # 응답 후처리 (think 태그 제거, JSON 파싱)
+├── models/                      # GGUF 모델 파일 저장 디렉토리
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── start_script.sh              # 모델 다운로드 + Docker 빌드/실행 스크립트
+```
+
+### 각 모듈 설명
+
+| 파일 | 역할 |
+|------|------|
+| `main.py` | FastAPI 앱 인스턴스 생성, 라우터 등록만 수행 |
+| `app/config.py` | `MODEL_PATH`, `N_CTX`, `N_GPU_LAYERS` 등 전역 설정값 관리 |
+| `app/schemas.py` | API 입출력 데이터 구조 정의 (`TextRequest`, `NERResponse`) |
+| `app/services/llm_service.py` | Llama 모델 로드(싱글턴) + `run_extraction()` 추론 함수 + 프롬프트/few-shot 관리 |
+| `app/routers/extract.py` | `/extract`, `/health` API 엔드포인트를 `APIRouter`로 정의 |
+| `app/utils/parser.py` | `clean_think_tags()`, `extract_json()`, `build_ner_result()` 후처리 유틸리티 |
+
 ## API 엔드포인트
 
 ### `POST /extract`
@@ -61,7 +96,7 @@ bash start_script.sh
 | `Qwen3.5-0.8B-Q4_K_M.gguf` | ~0.5GB | 기본 (빠른 응답) |
 | `Qwen3.5-2B-Q4_K_M.gguf` | ~1.5GB | 고품질 추출 |
 
-기본값은 0.8B 모델입니다. `main.py`에서 `MODEL_PATH`를 변경하여 2B 모델로 전환할 수 있습니다.
+기본값은 0.8B 모델입니다. `app/config.py`에서 `MODEL_PATH`를 변경하여 2B 모델로 전환할 수 있습니다.
 
 ## 기술 스택
 
